@@ -12,12 +12,12 @@
 const char * yaml_file = "sample_yaml_file_download_for_testing.yaml";
 
 TEST_CASE("yaml-cpp"){
-    BENCHMARK_ADVANCED("deserialization_yaml-cpp")(Catch::Benchmark::Chronometer meter){//из битов в норм файл
+    BENCHMARK_ADVANCED("deserialization_yaml-cpp")(Catch::Benchmark::Chronometer meter){
         meter.measure([] {
             YAML::Node Norm_File = YAML::LoadFile(yaml_file);
         });
     };
-    BENCHMARK_ADVANCED("serialization_yaml-cpp")(Catch::Benchmark::Chronometer meter){//из норм файла в биты
+    BENCHMARK_ADVANCED("serialization_yaml-cpp")(Catch::Benchmark::Chronometer meter){
             YAML::Node Norm_File = YAML::LoadFile(yaml_file);
             meter.measure([&Norm_File] {
                 std::ofstream ss(yaml_file);
@@ -28,32 +28,26 @@ TEST_CASE("yaml-cpp"){
 
 TEST_CASE("libfyaml"){
     BENCHMARK_ADVANCED("deserialization_lybfyaml")(Catch::Benchmark::Chronometer meter){
-        //FILE *file;
-        //file = fopen(yaml_file, "wb");//как двоичный открываем
+       
         meter.measure([] {
             fy_document* doc = fy_document_build_from_file(NULL, yaml_file);
             fy_document_destroy(doc);
         });
 
-        //std::ifstream File;
-        //File.open(yaml_file);
-        //std::vector<unsigned char> buffer(std::istreambuf_iterator<char>(File), {});
         
 
     };
     BENCHMARK_ADVANCED("serialization_lybfyaml")(Catch::Benchmark::Chronometer meter){
             fy_document* doc = fy_document_build_from_file(NULL, yaml_file);
             FILE *file;
-            file = fopen("output.yaml", "wb");//как двоичный открываем
+            file = fopen("output.yaml", "wb");
             meter.measure([&doc, &file] {
                 fy_emit_document_to_fp(doc, FYECF_DEFAULT, file);
-                //fy_document_build_from_file(NULL, yaml_file);
+                
             });
             fclose(file);
 
-            //std::ifstream File;
-            //File.open(yaml_file);
-            //std::vector<unsigned char> buffer(std::istreambuf_iterator<char>(File), {});
+            
 
 
         };
@@ -103,9 +97,4 @@ TEST_CASE("libyaml"){
 }
 
 
-//load - deserialization, save - se
 
-int main() {
-    std::cout << "Hello, World!" << std::endl;
-    return 0;
-}
