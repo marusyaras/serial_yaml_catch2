@@ -1,3 +1,5 @@
+#define CATCH_CONFIG_MAIN
+#define CATCH_CONFIG_ENABLE_BENCHMARKING
 #include <iostream>
 #include <yaml-cpp/yaml.h>
 
